@@ -14,13 +14,16 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 
 @Composable
-fun RowScope.TabNavigationItem(tab: Tab) {
+fun RowScope.TabNavigationItem(tab: Tab, onClearStack: () -> Unit) {
     val tabNavigator = LocalTabNavigator.current
     var isSelected: Boolean by remember { mutableStateOf(false) }
 
     BottomNavigationItem(
         selected = isSelected,
-        onClick = { tabNavigator.current = tab }.also { isSelected = tabNavigator.current == tab },
+        onClick = {
+            if (isSelected) onClearStack.invoke()
+            tabNavigator.current = tab
+        }.also { isSelected = tabNavigator.current == tab },
         label = {
             Text(
                 text = tab.options.title,

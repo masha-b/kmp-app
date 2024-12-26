@@ -55,7 +55,7 @@ import kmp_app_template.composeapp.generated.resources.label_title
 import org.jetbrains.compose.resources.stringResource
 
 
-data class DetailScreen(val objectId: Int, val setToolbar: @Composable ((ToolbarState) -> Unit)) : Screen {
+data class DetailScreen(val objectId: Int, val setToolbar: @Composable (ToolbarState) -> Unit) : Screen {
 
     @Composable
     override fun Content() {
@@ -64,7 +64,7 @@ data class DetailScreen(val objectId: Int, val setToolbar: @Composable ((Toolbar
 
         val obj by viewModel.getObject(objectId).collectAsStateWithLifecycle(initialValue = null)
 
-        setToolbar(
+        setToolbar.invoke(
             ToolbarState(
                 title = "",
                 isBackArrowEnable = true,

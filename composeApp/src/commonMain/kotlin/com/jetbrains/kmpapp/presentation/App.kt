@@ -34,6 +34,8 @@ fun App() {
         var toolbarState: ToolbarState by remember { mutableStateOf(ToolbarState()) }
         fun setToolbarState(state: ToolbarState) { toolbarState = state }
         val homeTab = HomeTab.apply { setToolbar = ::setToolbarState }
+        val settingsTab = SettingsTab.apply { setToolbar = ::setToolbarState }
+        val profileTab = ProfileTab.apply { setToolbar = ::setToolbarState }
 
         TabNavigator(homeTab) { navigator ->
 
@@ -61,9 +63,9 @@ fun App() {
                 content = { CurrentTab() },
                 bottomBar = {
                     BottomNavigation {
-                        TabNavigationItem(homeTab)
-                        TabNavigationItem(SettingsTab.apply { setToolbar = ::setToolbarState })
-                        TabNavigationItem(ProfileTab.apply { setToolbar = ::setToolbarState })
+                        TabNavigationItem(homeTab) { homeTab.onClearStack.invoke() }
+                        TabNavigationItem(settingsTab) { settingsTab.onClearStack.invoke() }
+                        TabNavigationItem(profileTab) { profileTab.onClearStack.invoke() }
                     }
                 }
             )

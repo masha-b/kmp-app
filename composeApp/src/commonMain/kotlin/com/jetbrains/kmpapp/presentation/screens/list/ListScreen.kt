@@ -37,7 +37,7 @@ import com.jetbrains.kmpapp.presentation.screens.common.EmptyScreenContent
 import com.jetbrains.kmpapp.presentation.screens.common.toolbar.ToolbarState
 import com.jetbrains.kmpapp.presentation.screens.detail.DetailScreen
 
-class ListScreen(val setToolbar: @Composable (ToolbarState) -> Unit,) : Screen {
+class ListScreen(val setToolbar: (ToolbarState) -> Unit) : Screen {
 
     @Composable
     override fun Content() {
@@ -46,17 +46,11 @@ class ListScreen(val setToolbar: @Composable (ToolbarState) -> Unit,) : Screen {
         val viewModel = koinScreenModel<ListScreenModel>()
         val objects by viewModel.objects.collectAsStateWithLifecycle()
 
-        setToolbar(
-            ToolbarState(
-                title = "Главная"
-            )
-        )
-
         AnimatedContent(objects.isNotEmpty()) { objectsAvailable ->
             if (objectsAvailable) {
                 ObjectGrid(
                     objects = objects,
-                    onObjectClick = { navigator.push(DetailScreen(it, setToolbar)) },
+                    onObjectClick = { navigator.push(DetailScreen(it, { setToolbar(it) })) },
                 )
             } else {
                 EmptyScreenContent(Modifier.fillMaxSize())

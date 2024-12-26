@@ -1,25 +1,18 @@
 package com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.jetbrains.kmpapp.presentation.screens.ProfileScreen
-import com.jetbrains.kmpapp.presentation.screens.common.toolbar.Toolbar
-import com.jetbrains.kmpapp.presentation.screens.common.toolbar.ToolbarState
+import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.BaseTab
 import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
 
-object ProfileTab : Tab, Toolbar {
-
-    override var setToolbar: (ToolbarState) -> Unit = {}
+object ProfileTab : Tab, BaseTab() {
 
     override val options: TabOptions
         @Composable
@@ -38,6 +31,9 @@ object ProfileTab : Tab, Toolbar {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen{ it -> setToolbar.invoke(it.copy(title = options.title)) })
+        Navigator(ListScreen { setToolbar(it) }) { navigator ->
+            onClearStack = { navigator.popAll() }
+            CurrentScreen()
+        }
     }
 }

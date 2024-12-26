@@ -21,11 +21,6 @@ import kmp_app_template.composeapp.generated.resources.Res
 import kmp_app_template.composeapp.generated.resources.back
 import org.jetbrains.compose.resources.stringResource
 
-interface Toolbar {
-
-    var setToolbar: (ToolbarState) -> Unit
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
