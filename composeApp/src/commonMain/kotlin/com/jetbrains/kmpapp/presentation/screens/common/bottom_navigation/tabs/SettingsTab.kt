@@ -31,7 +31,7 @@ object SettingsTab : Tab, BaseTab() {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen { setToolbar(it) }) { navigator ->
+        Navigator(ListScreen()) { navigator ->
             onClearStack = { navigator.popAll() }
             CurrentScreen()
         }

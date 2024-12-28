@@ -17,6 +17,7 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.jetbrains.kmpapp.CloseApp
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.TabNavigationItem
+import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs.AuthTab
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs.HomeTab
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs.SettingsTab
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs.ProfileTab
@@ -33,9 +34,10 @@ fun App() {
         var isNeedCloseApp: Boolean by remember { mutableStateOf(false) }
         var toolbarState: ToolbarState by remember { mutableStateOf(ToolbarState()) }
         fun setToolbarState(state: ToolbarState) { toolbarState = state }
-        val homeTab = HomeTab.apply { setToolbar = ::setToolbarState }
-        val settingsTab = SettingsTab.apply { setToolbar = ::setToolbarState }
-        val profileTab = ProfileTab.apply { setToolbar = ::setToolbarState }
+        val homeTab = HomeTab
+        val settingsTab = SettingsTab
+        val profileTab = ProfileTab
+        val authTab = AuthTab
 
         TabNavigator(homeTab) { navigator ->
 
@@ -63,9 +65,10 @@ fun App() {
                 content = { CurrentTab() },
                 bottomBar = {
                     BottomNavigation {
-                        TabNavigationItem(homeTab) { homeTab.onClearStack.invoke() }
-                        TabNavigationItem(settingsTab) { settingsTab.onClearStack.invoke() }
-                        TabNavigationItem(profileTab) { profileTab.onClearStack.invoke() }
+                        TabNavigationItem(homeTab)
+                        TabNavigationItem(settingsTab)
+                        TabNavigationItem(profileTab)
+                        TabNavigationItem(authTab)
                     }
                 }
             )

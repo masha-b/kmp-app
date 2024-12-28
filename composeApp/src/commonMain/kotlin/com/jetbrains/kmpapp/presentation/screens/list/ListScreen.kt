@@ -36,21 +36,22 @@ import com.jetbrains.kmpapp.data.MuseumObject
 import com.jetbrains.kmpapp.presentation.screens.common.EmptyScreenContent
 import com.jetbrains.kmpapp.presentation.screens.common.toolbar.ToolbarState
 import com.jetbrains.kmpapp.presentation.screens.detail.DetailScreen
+import org.koin.compose.viewmodel.koinViewModel
 
-class ListScreen(val setToolbar: (ToolbarState) -> Unit) : Screen {
+class ListScreen : Screen {
 
     @Composable
     override fun Content() {
 
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<ListScreenModel>()
+        val viewModel = koinViewModel<ListScreenModel>()
         val objects by viewModel.objects.collectAsStateWithLifecycle()
 
         AnimatedContent(objects.isNotEmpty()) { objectsAvailable ->
             if (objectsAvailable) {
                 ObjectGrid(
                     objects = objects,
-                    onObjectClick = { navigator.push(DetailScreen(it, { setToolbar(it) })) },
+                    onObjectClick = { navigator.push(DetailScreen(it, {  })) },
                 )
             } else {
                 EmptyScreenContent(Modifier.fillMaxSize())

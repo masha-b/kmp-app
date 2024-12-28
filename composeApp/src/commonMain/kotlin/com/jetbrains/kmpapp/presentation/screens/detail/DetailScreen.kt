@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +54,7 @@ import kmp_app_template.composeapp.generated.resources.label_medium
 import kmp_app_template.composeapp.generated.resources.label_repository
 import kmp_app_template.composeapp.generated.resources.label_title
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 
 data class DetailScreen(val objectId: Int, val setToolbar: @Composable (ToolbarState) -> Unit) : Screen {
@@ -60,7 +62,8 @@ data class DetailScreen(val objectId: Int, val setToolbar: @Composable (ToolbarS
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<DetailScreenModel>()
+        val viewModel = koinViewModel<DetailScreenModel>()
+        val obj1 by viewModel.getObject(objectId).collectAsState(initial = null)
 
         val obj by viewModel.getObject(objectId).collectAsStateWithLifecycle(initialValue = null)
 

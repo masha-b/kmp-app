@@ -1,5 +1,7 @@
 package com.jetbrains.kmpapp.presentation.screens.list
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.jetbrains.kmpapp.data.MuseumObject
@@ -8,8 +10,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-class ListScreenModel(museumRepository: MuseumRepository) : ScreenModel {
+class ListScreenModel(museumRepository: MuseumRepository) : ViewModel() {
     val objects: StateFlow<List<MuseumObject>> =
         museumRepository.getObjects()
-            .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 }

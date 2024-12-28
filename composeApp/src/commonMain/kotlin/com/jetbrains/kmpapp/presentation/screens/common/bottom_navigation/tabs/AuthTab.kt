@@ -1,6 +1,7 @@
 package com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,15 +12,14 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.jetbrains.kmpapp.presentation.screens.auth.AuthScreen
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.BaseTab
-import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
 
-object ProfileTab : Tab, BaseTab() {
+object AuthTab : Tab, BaseTab() {
 
     override val options: TabOptions
         @Composable
         get() {
-            val title = "Профиль"
-            val icon = rememberVectorPainter(Icons.Default.Person)
+            val title = "Авторизация"
+            val icon = rememberVectorPainter(Icons.Default.AccountBox)
 
             return remember {
                 TabOptions(
@@ -32,7 +32,7 @@ object ProfileTab : Tab, BaseTab() {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen()) { navigator ->
+        Navigator(AuthScreen()) { navigator ->
             onClearStack = { navigator.popAll() }
             CurrentScreen()
         }

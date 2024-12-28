@@ -12,7 +12,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.BaseTab
 import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
 
-object HomeTab : Tab, BaseTab() {
+object HomeTab : Tab {
 
     override val options: TabOptions
         @Composable
@@ -31,8 +31,7 @@ object HomeTab : Tab, BaseTab() {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen { setToolbar(it) }) { navigator ->
-            onClearStack = { navigator.popAll() }
+        Navigator(ListScreen()) { navigator ->
             CurrentScreen()
         }
     }

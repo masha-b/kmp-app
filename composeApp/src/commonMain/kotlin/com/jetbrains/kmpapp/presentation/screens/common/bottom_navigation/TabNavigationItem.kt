@@ -5,6 +5,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -14,14 +15,18 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 
 @Composable
-fun RowScope.TabNavigationItem(tab: Tab, onClearStack: () -> Unit) {
+fun RowScope.TabNavigationItem(tab: Tab) {
     val tabNavigator = LocalTabNavigator.current
     var isSelected: Boolean by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isSelected = tabNavigator.current == tab
+    }
 
     BottomNavigationItem(
         selected = isSelected,
         onClick = {
-            if (isSelected) onClearStack.invoke()
+            //if (isSelected) onClearStack.invoke()
             tabNavigator.current = tab
         }.also { isSelected = tabNavigator.current == tab },
         label = {
