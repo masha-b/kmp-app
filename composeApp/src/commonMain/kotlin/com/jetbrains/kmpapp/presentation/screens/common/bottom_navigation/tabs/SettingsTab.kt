@@ -9,15 +9,20 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.BaseTab
-import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
+import com.jetbrains.kmpapp.presentation.screens.SettingsScreen
+import kmp_app_template.composeapp.generated.resources.Res
+import kmp_app_template.composeapp.generated.resources.settings
+import org.jetbrains.compose.resources.stringResource
 
-object SettingsTab : Tab, BaseTab() {
+object SettingsTab : Tab {
+
+    var onClearStack: (() -> Unit)? = null
+        private set
 
     override val options: TabOptions
         @Composable
         get() {
-            val title = "Настройки"
+            val title = stringResource(Res.string.settings)
             val icon = rememberVectorPainter(Icons.Default.Settings)
 
             return remember {
@@ -31,7 +36,7 @@ object SettingsTab : Tab, BaseTab() {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen { setToolbar(it) }) { navigator ->
+        Navigator(SettingsScreen()) { navigator ->
             onClearStack = { navigator.popAll() }
             CurrentScreen()
         }

@@ -9,16 +9,19 @@ import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
 import com.jetbrains.kmpapp.presentation.AppViewModel
 import com.jetbrains.kmpapp.presentation.screens.common.ScreenState
+import kmp_app_template.composeapp.generated.resources.Res
+import kmp_app_template.composeapp.generated.resources.tasks
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 
-class ProfileScreen : Screen {
+class TasksScreen : Screen {
 
     @Composable
     override fun Content() {
 
         val appViewModel = koinViewModel<AppViewModel>()
-        appViewModel.setScreenState(ScreenState(isEnable = false))
+        appViewModel.setScreenState(ScreenState(title = stringResource(Res.string.tasks), isBackArrowEnable = false))
 
         Box(modifier = Modifier.fillMaxSize().background(color = Color.Green)) {
 

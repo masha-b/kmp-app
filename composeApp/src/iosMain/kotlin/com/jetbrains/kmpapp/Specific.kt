@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import platform.UIKit.UIApplication
 
 @Composable
-actual fun closeApp() {
+actual fun CloseApp() {
     UIApplication.sharedApplication.performSelector("suspend")
 }
 

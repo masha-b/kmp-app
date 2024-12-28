@@ -5,6 +5,7 @@ import com.jetbrains.kmpapp.data.KtorMuseumApi
 import com.jetbrains.kmpapp.data.MuseumApi
 import com.jetbrains.kmpapp.data.MuseumRepository
 import com.jetbrains.kmpapp.data.MuseumStorage
+import com.jetbrains.kmpapp.presentation.AppViewModel
 import com.jetbrains.kmpapp.presentation.screens.detail.DetailScreenModel
 import com.jetbrains.kmpapp.presentation.screens.list.ListScreenModel
 import io.github.aakira.napier.DebugAntilog
@@ -19,6 +20,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -49,7 +51,9 @@ val dataModule = module {
     }
 }
 
+
 val screenModelModule = module {
+    single<AppViewModel> { AppViewModel() }
     factoryOf(::ListScreenModel)
     factoryOf(::DetailScreenModel)
 }

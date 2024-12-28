@@ -33,24 +33,31 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import com.jetbrains.kmpapp.data.MuseumObject
-import com.jetbrains.kmpapp.presentation.screens.common.EmptyScreenContent
-import com.jetbrains.kmpapp.presentation.screens.common.toolbar.ToolbarState
+import com.jetbrains.kmpapp.presentation.AppViewModel
+import com.jetbrains.kmpapp.presentation.screens.common.composables.EmptyScreenContent
+import com.jetbrains.kmpapp.presentation.screens.common.ScreenState
 import com.jetbrains.kmpapp.presentation.screens.detail.DetailScreen
+import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
-class ListScreen(val setToolbar: (ToolbarState) -> Unit) : Screen {
+@Serializable
+class ListScreen() : Screen {
 
     @Composable
     override fun Content() {
 
         val navigator = LocalNavigator.currentOrThrow
+        val appViewModel = koinViewModel<AppViewModel>()
         val viewModel = koinScreenModel<ListScreenModel>()
         val objects by viewModel.objects.collectAsStateWithLifecycle()
+
+        appViewModel.setScreenState(ScreenState(title = "Главная", isBackArrowEnable = false))
 
         AnimatedContent(objects.isNotEmpty()) { objectsAvailable ->
             if (objectsAvailable) {
                 ObjectGrid(
                     objects = objects,
-                    onObjectClick = { navigator.push(DetailScreen(it, { setToolbar(it) })) },
+                    onObjectClick = { navigator.push(DetailScreen(it)) },
                 )
             } else {
                 EmptyScreenContent(Modifier.fillMaxSize())

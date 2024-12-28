@@ -12,6 +12,7 @@ napier = "2.7.1"
 slf4j = "1.7.36"
 voyager = "1.1.0-beta02"
 navigationCompose = "2.8.0-alpha10"
+kotlinx-datetime = "0.6.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -36,6 +37,8 @@ voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voy
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

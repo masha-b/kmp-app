@@ -1,22 +1,20 @@
 package com.jetbrains.kmpapp.presentation.screens.common.toolbar
 
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import com.jetbrains.kmpapp.presentation.screens.common.ActionButton
 import kmp_app_template.composeapp.generated.resources.Res
 import kmp_app_template.composeapp.generated.resources.back
 import org.jetbrains.compose.resources.stringResource
@@ -27,15 +25,9 @@ import org.jetbrains.compose.resources.stringResource
 fun Toolbar(
     title: String,
     isBackVisible: Boolean = false,
-    isActionsEnabled: Boolean = true,
-    onBackNavigation: () -> Unit,
-//    onLoginsNavigationClick: (() -> Unit)? = null,
-//    onAddLoginClick: (() -> Unit)? = null,
-//    onSearchClick: (() -> Unit)? = null,
-//    onLogoutClick: (() -> Unit)? = null
+    actionButtons: List<ActionButton> = listOf(),
+    onBackNavigation: () -> Unit
 ) {
-    val navigator = LocalNavigator.currentOrThrow
-
     TopAppBar(
         expandedHeight = 56.dp,
         title = {
@@ -53,43 +45,35 @@ fun Toolbar(
                         stringResource(Res.string.back)
                     )
                 }
-//            (Icons.AutoMirrored.Filled.ArrowBack, true, onBackNavigation)
         },
-//        actions = {
-//            Row {
-//                onLoginsNavigationClick?.let {
-//                    ActionButton(ru.mosreg.fireservice.R.drawable.ic_shield, isActionsEnabled, it)
-//                }
-//
-//                onAddLoginClick?.let {
-//                    ActionButton(ru.mosreg.fireservice.R.drawable.ic_plus, isActionsEnabled, it)
-//                }
-//
-//                onSearchClick?.let {
-//                    ActionButton(ru.mosreg.fireservice.R.drawable.ic_search, isActionsEnabled, it)
-//                }
-//
-//                onLogoutClick?.let {
-//                    ActionButton(ru.mosreg.fireservice.R.drawable.ic_logout, isActionsEnabled, it)
-//                }
-//            }
-//        },
-//        colors = TopAppBarColors(
-//            containerColor = ru.mosreg.fireservice.presentation.ui.theme.Red,
-//            actionIconContentColor = ru.mosreg.fireservice.presentation.ui.theme.White,
-//            navigationIconContentColor = ru.mosreg.fireservice.presentation.ui.theme.White,
-//            titleContentColor = ru.mosreg.fireservice.presentation.ui.theme.Red,
-//            scrolledContainerColor = ru.mosreg.fireservice.presentation.ui.theme.Red
-//        )
+        actions = {
+            LazyRow {
+                items(actionButtons, key = { item -> item.key }) {
+                    ToolbarButton(
+                        iconRes = it.icon,
+                        isEnabled = it.isEnable,
+                        onClick = it.onClick
+                    )
+                }
+            }
+        },
+        colors = TopAppBarColors(
+            containerColor = Color.White,
+            actionIconContentColor = Color.Black,
+            navigationIconContentColor = Color.Black,
+            titleContentColor = Color.Black,
+            scrolledContainerColor = Color.Black
+        )
     )
 }
 
-//@Composable
-//fun ActionButton(@androidx.annotation.DrawableRes iconRes: Int, isEnabled: Boolean, onClick: () -> Unit) {
-//    IconButton(onClick = onClick, enabled = isEnabled) {
-//        Icon(
-//            painter = androidx.compose.ui.res.painterResource(id = iconRes),
-//            contentDescription = null
-//        )
-//    }
-//}
+@Composable
+fun ToolbarButton(iconRes: ImageVector, isEnabled: Boolean, onClick: () -> Unit) {
+    IconButton(onClick = onClick, enabled = isEnabled) {
+        Icon(
+            imageVector = iconRes,
+            contentDescription = null,
+            tint = if (isEnabled) Color.Black else Color.LightGray
+        )
+    }
+}

@@ -1,7 +1,7 @@
 package com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -9,12 +9,12 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
+import com.jetbrains.kmpapp.presentation.screens.TasksScreen
 import kmp_app_template.composeapp.generated.resources.Res
-import kmp_app_template.composeapp.generated.resources.home
+import kmp_app_template.composeapp.generated.resources.news
 import org.jetbrains.compose.resources.stringResource
 
-object HomeTab : Tab {
+object TasksTab : Tab {
 
     var onClearStack: (() -> Unit)? = null
         private set
@@ -22,8 +22,8 @@ object HomeTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(Res.string.home)
-            val icon = rememberVectorPainter(Icons.Default.Home)
+            val title = stringResource(Res.string.news)
+            val icon = rememberVectorPainter(Icons.Default.Edit)
 
             return remember {
                 TabOptions(
@@ -36,7 +36,7 @@ object HomeTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(ListScreen()) { navigator ->
+        Navigator(TasksScreen()) { navigator ->
             onClearStack = { navigator.popAll() }
             CurrentScreen()
         }

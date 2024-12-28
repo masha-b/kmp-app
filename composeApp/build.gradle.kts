@@ -64,6 +64,8 @@ kotlin {
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.koin)
+
+            implementation(libs.kotlinx.datetime)
         }
     }
 }
