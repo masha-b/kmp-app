@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.jetbrains.kmpapp.presentation.App
+import com.jetbrains.kmpapp.presentation.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +21,9 @@ class MainActivity : ComponentActivity() {
 //            LaunchedEffect(isSystemInDarkTheme()) {
 //                enableEdgeToEdge()
 //            }
-            App()
-
-
+            AppTheme {
+                App()
+            }
         }
     }
 }
