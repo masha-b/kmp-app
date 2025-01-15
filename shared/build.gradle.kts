@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kmpNativeCoroutines)
 }
 
 kotlin {
@@ -50,6 +52,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.kotlinx.datetime)
+            api(libs.kmp.observable.viewmodel)
         }
 
         // Required by KMM-ViewModel

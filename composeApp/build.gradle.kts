@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kmpNativeCoroutines)
 }
 
 kotlin {
@@ -51,6 +52,11 @@ kotlin {
 
 
             implementation(libs.kotlinx.datetime)
+
+            all {
+                languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+                languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 package com.jetbrains.kmpapp.presentation.base
 
-import androidx.lifecycle.ViewModel
+//import androidx.lifecycle.ViewModel
 import com.jetbrains.kmpapp.isDebug
+import com.rickclephas.kmp.observableviewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
