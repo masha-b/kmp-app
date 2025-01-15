@@ -14,6 +14,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -74,13 +75,13 @@ fun Toolbar(
 //                }
 //            }
 //        },
-//        colors = TopAppBarColors(
-//            containerColor = ru.mosreg.fireservice.presentation.ui.theme.Red,
-//            actionIconContentColor = ru.mosreg.fireservice.presentation.ui.theme.White,
-//            navigationIconContentColor = ru.mosreg.fireservice.presentation.ui.theme.White,
-//            titleContentColor = ru.mosreg.fireservice.presentation.ui.theme.Red,
-//            scrolledContainerColor = ru.mosreg.fireservice.presentation.ui.theme.Red
-//        )
+        colors = TopAppBarColors(
+            containerColor = Color.White,
+            actionIconContentColor = Color.Black,
+            navigationIconContentColor = Color.Black,
+            titleContentColor = Color.Black,
+            scrolledContainerColor = Color.Black
+        )
     )
 }
 

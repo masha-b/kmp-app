@@ -1,6 +1,13 @@
 package com.jetbrains.kmpapp.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -11,6 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.navigator.internal.BackHandler
 import cafe.adriel.voyager.navigator.tab.CurrentTab
@@ -51,6 +60,7 @@ fun App() {
             }
 
             Scaffold(
+                //modifier = Modifier.background(Color.Red).windowInsetsPadding(WindowInsets.safeDrawing),
                 topBar = {
                     with(toolbarState) {
                         if (isEnable) {
@@ -62,7 +72,15 @@ fun App() {
                         }
                     }
                 },
-                content = { CurrentTab() },
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it)
+                    ) {
+                        CurrentTab()
+                    }
+                },
                 bottomBar = {
                     BottomNavigation {
                         TabNavigationItem(homeTab)

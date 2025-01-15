@@ -1,10 +1,13 @@
 package com.jetbrains.kmpapp.presentation.screens.common.bottom_navigation.tabs
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
@@ -36,5 +39,9 @@ object AuthTab : Tab, BaseTab() {
             onClearStack = { navigator.popAll() }
             CurrentScreen()
         }
+
+//        Scaffold(modifier = Modifier
+//            .fillMaxSize()
+//        )
     }
 }
