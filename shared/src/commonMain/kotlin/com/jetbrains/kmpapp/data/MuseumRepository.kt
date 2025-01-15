@@ -18,7 +18,7 @@ class MuseumRepository(
     }
 
     suspend fun refresh() {
-        museumStorage.saveObjects(museumApi.getData().getOrDefault(emptyList()))
+        museumStorage.saveObjects(museumApi.getData().getOrNull().orEmpty())
     }
 
     fun getObjects(): Flow<List<MuseumObject>> = museumStorage.getObjects()

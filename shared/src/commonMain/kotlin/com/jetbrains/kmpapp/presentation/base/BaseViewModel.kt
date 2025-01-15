@@ -1,10 +1,11 @@
 package com.jetbrains.kmpapp.presentation.base
 
-//import androidx.lifecycle.ViewModel
 import com.jetbrains.kmpapp.isDebug
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.rickclephas.kmp.observableviewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import com.rickclephas.kmp.observableviewmodel.MutableStateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,15 +26,18 @@ abstract class BaseViewModel<State : Reducer.ViewState, Event : Reducer.ViewEven
     initialState: State,
     private val reducer: Reducer<State, Event, Effect>
 ) : ViewModel() {
-    private val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+    private val _state: MutableStateFlow<State> = MutableStateFlow(viewModelScope, initialState)
+    @NativeCoroutinesState
     val state: StateFlow<State>
         get() = _state.asStateFlow()
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
+    @NativeCoroutinesState
     val event: SharedFlow<Event>
         get() = _event.asSharedFlow()
 
     private val _effects = Channel<Effect>(capacity = Channel.CONFLATED)
+    @NativeCoroutinesState
     val effect = _effects.receiveAsFlow()
 
     val timeCapsule: TimeCapsule<State> = TimeTravelCapsule { storedState ->

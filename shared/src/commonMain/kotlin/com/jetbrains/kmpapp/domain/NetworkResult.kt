@@ -4,6 +4,8 @@ import com.jetbrains.kmpapp.constants.ErrorCodes
 import com.jetbrains.kmpapp.data.dto.base.ServerResponse
 import com.jetbrains.kmpapp.domain.exceptions.ServerException
 import com.jetbrains.kmpapp.domain.exceptions.UnauthorizedException
+import com.jetbrains.kmpapp.domain.exceptions.UnknownException
+import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
@@ -21,11 +23,14 @@ suspend inline fun <reified T> HttpClient.fetch(
         when {
             body.isSuccessful -> Result.success(body.getData<T?>())
             body.errorCode == ErrorCodes.UNAUTHORIZED_CODE -> Result.failure(UnauthorizedException())
-            else -> Result.failure(ServerException(body.errorName))
+            else -> Result.failure(ServerException(body.errorCode.toString(), body.errorName))
         }
-    } else
-        Result.failure(Throwable("${response.status}: ${response.bodyAsText()}"))
+    } else {
+        Napier.e("${response.status}: ${response.bodyAsText()}")
+        Result.failure(UnknownException())
+    }
 } catch (e: Exception) {
+    Napier.e(e.message.toString(), e)
     Result.failure(e)
 }
 
@@ -38,11 +43,14 @@ suspend inline fun <reified T> HttpClient.fetchForGet(
         when {
             body.isSuccessful -> Result.success(body.getData<T?>())
             body.errorCode == ErrorCodes.UNAUTHORIZED_CODE -> Result.failure(UnauthorizedException())
-            else -> Result.failure(ServerException(body.errorName))
+            else -> Result.failure(ServerException(body.errorCode.toString(), body.errorName))
         }
-    } else
-        Result.failure(Throwable("${response.status}: ${response.bodyAsText()}"))
+    } else {
+        Napier.e("${response.status}: ${response.bodyAsText()}")
+        Result.failure(UnknownException())
+    }
 } catch (e: Exception) {
+    Napier.e(e.message.toString(), e)
     Result.failure(e)
 }
 

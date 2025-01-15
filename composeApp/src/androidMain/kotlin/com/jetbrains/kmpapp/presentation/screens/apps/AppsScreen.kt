@@ -75,7 +75,7 @@ data class AppsScreen(val type: VkpAppType) : Screen {
             effect.collect { action ->
                 when (action) {
                     AppsReducer.Effect.NavigateToCallLog -> navigator.replace(ListScreen())
-                    is AppsReducer.Effect.Error -> appViewModel.showError(action.error?.message)
+                    is AppsReducer.Effect.Error -> appViewModel.showError(action.error)
                     AppsReducer.Effect.ScrollListToTop -> listState.animateScrollToItem(0)
                 }
             }

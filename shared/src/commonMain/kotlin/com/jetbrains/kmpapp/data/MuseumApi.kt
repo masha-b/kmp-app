@@ -4,7 +4,7 @@ import com.jetbrains.kmpapp.domain.fetchForGet
 import io.ktor.client.HttpClient
 
 interface MuseumApi {
-    suspend fun getData(): Result<List<MuseumObject>>
+    suspend fun getData(): Result<List<MuseumObject>?>
 }
 
 class KtorMuseumApi(private val client: HttpClient) : MuseumApi {
@@ -13,6 +13,6 @@ class KtorMuseumApi(private val client: HttpClient) : MuseumApi {
             "https://raw.githubusercontent.com/Kotlin/KMP-App-Template/main/list.json"
     }
 
-    override suspend fun getData(): Result<List<MuseumObject>> = client.fetchForGet(API_URL)
+    override suspend fun getData(): Result<List<MuseumObject>?> = client.fetchForGet(API_URL)
 
 }

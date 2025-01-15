@@ -55,7 +55,7 @@ class AuthScreen : Screen {
             effect.collect { action ->
                 when (action) {
                     AuthReducer.AuthEffect.NavigateToCallLog -> navigator.replace(AppsScreen(VkpAppType.ANDROID))
-                    is AuthReducer.AuthEffect.Error -> appViewModel.setScreenState(appViewModel.screenState.value.copy(error = action.error?.message))
+                    is AuthReducer.AuthEffect.Error -> appViewModel.showError(action.error)
                 }
             }
         }
