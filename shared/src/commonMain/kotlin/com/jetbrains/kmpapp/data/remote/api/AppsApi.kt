@@ -1,17 +1,14 @@
 package com.jetbrains.kmpapp.data.remote.api
 
-import com.jetbrains.kmpapp.data.dto.apps.RequestDto
 import com.jetbrains.kmpapp.data.dto.apps.VkpAppsDto
 import com.jetbrains.kmpapp.domain.fetch
 import io.ktor.client.HttpClient
-import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
 import io.ktor.http.URLProtocol
-import io.ktor.http.appendEncodedPathSegments
 import io.ktor.http.appendPathSegments
 
 interface AppsApi {
-    suspend fun getAppsByType(type: String): Result<RequestDto>
+    suspend fun getAppsByType(type: String): Result<VkpAppsDto?>
 }
 
 class AppsApiImpl(private val client: HttpClient) : AppsApi {
@@ -19,7 +16,7 @@ class AppsApiImpl(private val client: HttpClient) : AppsApi {
         private const val API_URL = "apps.sitesoft.ru/api"
     }
 
-    override suspend fun getAppsByType(type: String): Result<RequestDto> = client.fetch {
+    override suspend fun getAppsByType(type: String): Result<VkpAppsDto?> = client.fetch {
         url {
             method = HttpMethod.Get
             protocol = URLProtocol.HTTPS

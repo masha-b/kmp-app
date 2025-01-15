@@ -1,8 +1,7 @@
 package com.jetbrains.kmpapp.domain
 
 import com.jetbrains.kmpapp.constants.ErrorCodes
-import com.jetbrains.kmpapp.data.dto.apps.VkpAppsDto
-import com.jetbrains.kmpapp.data.dto.auth.AuthResultDto
+import com.jetbrains.kmpapp.data.dto.base.ServerResponse
 import com.jetbrains.kmpapp.domain.exceptions.ServerException
 import com.jetbrains.kmpapp.domain.exceptions.UnauthorizedException
 import io.ktor.client.HttpClient
@@ -15,17 +14,14 @@ import io.ktor.http.HttpStatusCode
 
 suspend inline fun <reified T> HttpClient.fetch(
     block: HttpRequestBuilder.() -> Unit
-): Result<T> = try {
+): Result<T?> = try {
     val response = request(block)
     if (response.status == HttpStatusCode.OK) {
-        println("555555 77777 ${response.body<AuthResultDto>().getToken()}")
-        println("555555 77777 ${response.body<AuthResultDto>().errorCode == ErrorCodes.UNAUTHORIZED_CODE}")
+        val body = response.body<ServerResponse<T>>()
         when {
-            response.body<AuthResultDto>().errorCode == 0 && response.body<AuthResultDto>().getToken().isNotBlank() == true -> Result.success(response.body())
-            response.body<AuthResultDto>().errorCode == 0 -> Result.success(response.body())
-            response.body<AuthResultDto>().errorCode == ErrorCodes.UNAUTHORIZED_CODE ->
-                Result.failure(UnauthorizedException())
-            else -> Result.failure(ServerException(response.body<AuthResultDto>().errorName))
+            body.isSuccessful -> Result.success(body.getData<T?>())
+            body.errorCode == ErrorCodes.UNAUTHORIZED_CODE -> Result.failure(UnauthorizedException())
+            else -> Result.failure(ServerException(body.errorName))
         }
     } else
         Result.failure(Throwable("${response.status}: ${response.bodyAsText()}"))
@@ -35,11 +31,16 @@ suspend inline fun <reified T> HttpClient.fetch(
 
 suspend inline fun <reified T> HttpClient.fetchForGet(
     url: String,
-): Result<T> = try {
+): Result<T?> = try {
     val response = get(url)
-    if (response.status == HttpStatusCode.OK)
-        Result.success(response.body())
-    else
+    if (response.status == HttpStatusCode.OK) {
+        val body = response.body<ServerResponse<T>>()
+        when {
+            body.isSuccessful -> Result.success(body.getData<T?>())
+            body.errorCode == ErrorCodes.UNAUTHORIZED_CODE -> Result.failure(UnauthorizedException())
+            else -> Result.failure(ServerException(body.errorName))
+        }
+    } else
         Result.failure(Throwable("${response.status}: ${response.bodyAsText()}"))
 } catch (e: Exception) {
     Result.failure(e)

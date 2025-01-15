@@ -11,5 +11,5 @@ class AppsRepository(
 ) : AppsRepo {
 
     override suspend fun getAppsByType(type: String): Result<List<VkpApp>> =
-        appsApi.getAppsByType(type).map { it.data.list.toDomain() }
+        appsApi.getAppsByType(type).map { it?.list.orEmpty().toDomain() }
 }

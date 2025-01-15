@@ -15,9 +15,7 @@ class AuthRepository(
         login: String,
         password: String
     ): Result<Boolean> = authApi.auth(AuthBody(login, password)).map {
-        println("55555555 ${it.getToken()}")
-
-        it.getToken().isNotBlank()
+        it?.token?.isNotBlank() == true
     }
 
     override fun clearToken() {
