@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +32,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import com.jetbrains.kmpapp.CONST.ACTION_EXIT
-import com.jetbrains.kmpapp.CONST.ACTION_SEND
 import com.jetbrains.kmpapp.data.MuseumObject
 import com.jetbrains.kmpapp.presentation.AppViewModel
-import com.jetbrains.kmpapp.presentation.common.ActionButton
 import com.jetbrains.kmpapp.presentation.common.composables.EmptyScreenContent
 import com.jetbrains.kmpapp.presentation.common.ScreenState
 import org.koin.compose.viewmodel.koinViewModel

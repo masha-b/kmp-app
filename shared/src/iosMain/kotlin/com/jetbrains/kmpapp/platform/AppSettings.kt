@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp
+package com.jetbrains.kmpapp.platform
 
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.Platform

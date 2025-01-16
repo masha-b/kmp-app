@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.libs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -35,6 +36,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.datastore)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

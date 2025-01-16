@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.jetbrains.kmpapp.isDebug
+import com.jetbrains.kmpapp.platform.isDebug
 import com.jetbrains.kmpapp.presentation.base.Reducer
 import com.jetbrains.kmpapp.presentation.base.TimeCapsule
 import com.jetbrains.kmpapp.R

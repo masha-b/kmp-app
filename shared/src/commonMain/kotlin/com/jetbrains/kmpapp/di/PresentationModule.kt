@@ -13,6 +13,6 @@ val presentationModule: Module
     get() = module {
         factory { ListViewModel(get(), get()) }
         factory { DetailsViewModel(get()) }
-        factory { AuthViewModel(get()) }
+        factory { AuthViewModel(get(), get()) }
         factory { (type: VkpAppType) -> AppsViewModel(get(), type) }
     }

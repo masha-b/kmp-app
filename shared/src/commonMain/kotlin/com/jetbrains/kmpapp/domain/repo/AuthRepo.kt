@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepo {
     suspend fun auth(login: String, password: String): Result<Boolean>
     fun clearToken()
-    fun getAuthState(): Flow<Resource<Boolean>>
+    fun getAuthState(): Flow<Boolean>
 }

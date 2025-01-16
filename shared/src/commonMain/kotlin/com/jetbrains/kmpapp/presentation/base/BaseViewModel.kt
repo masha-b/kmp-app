@@ -1,6 +1,6 @@
 package com.jetbrains.kmpapp.presentation.base
 
-import com.jetbrains.kmpapp.isDebug
+import com.jetbrains.kmpapp.platform.isDebug
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.rickclephas.kmp.observableviewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel

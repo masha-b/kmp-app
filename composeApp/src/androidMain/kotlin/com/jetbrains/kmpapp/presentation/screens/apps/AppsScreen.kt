@@ -19,7 +19,6 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import com.jetbrains.kmpapp.CONST.ACTION_EXIT
 import com.jetbrains.kmpapp.presentation.AppViewModel
 import com.jetbrains.kmpapp.presentation.common.ScreenState
 import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
@@ -35,6 +34,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.parameter.parametersOf
 import com.jetbrains.kmpapp.R
+import com.jetbrains.kmpapp.constants.CONST.ACTION_SEARCH
 import com.jetbrains.kmpapp.presentation.theme.Gray
 import com.jetbrains.kmpapp.presentation.utils.formatBuildDatetime
 
@@ -62,7 +62,7 @@ data class AppsScreen(val type: VkpAppType) : Screen {
                 isBackArrowEnable = false,
                 actionButtons = listOf(
                     ActionButton(
-                        key = ACTION_EXIT,
+                        key = ACTION_SEARCH,
                         icon = painterResource(R.drawable.ic_search),
                         onClick = {  viewModel.sendEvent(AppsReducer.Event.OnSearchIconClick) }
                     )

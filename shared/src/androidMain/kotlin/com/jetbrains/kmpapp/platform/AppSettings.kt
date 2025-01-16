@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp
+package com.jetbrains.kmpapp.platform
 
 import com.jetbrains.kmpapp.shared.BuildConfig
 

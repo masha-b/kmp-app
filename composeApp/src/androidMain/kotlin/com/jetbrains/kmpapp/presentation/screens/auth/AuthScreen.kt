@@ -44,11 +44,16 @@ class AuthScreen : Screen {
         val viewModel = koinViewModel<AuthViewModel>()
         val appViewModel = koinViewModel<AppViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val authState by viewModel.authState.collectAsStateWithLifecycle()
         val effect = rememberFlowWithLifecycle(viewModel.effect)
         val context = LocalContext.current
 
         appViewModel.setScreenState(
-            ScreenState(isEnable = false, isLoading = state.isLoading, isBottomNavigationEnable = false)
+            ScreenState(
+                isEnable = false,
+                isLoading = state.isLoading,
+                isBottomNavigationEnable = false
+            )
         )
 
         LaunchedEffect(effect) {
@@ -60,69 +65,75 @@ class AuthScreen : Screen {
             }
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
-                .debugInputPointer(context, viewModel.timeCapsule),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+        when (authState) {
+            null -> {}
+            true -> navigator.replace(AppsScreen(VkpAppType.ANDROID))
+            false -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp)
+                        .debugInputPointer(context, viewModel.timeCapsule),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
 
-            Text(
-                text = "Авторизация",
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
+                    Text(
+                        text = "Авторизация",
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center
+                    )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-            OutlinedTextField(
-                modifier = Modifier,
-                value = state.email,
-                label = { Text("E-mail", style = MaterialTheme.typography.bodyMedium) },
-                onValueChange = {
-                    viewModel.sendEvent(AuthReducer.AuthEvent.ChangeEmailText(text = it))
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                isError = state.emailFieldError?.isNotEmpty() == true,
-                supportingText = {
-                    ErrorLabel(state.emailFieldError.orEmpty())
+                    OutlinedTextField(
+                        modifier = Modifier,
+                        value = state.email,
+                        label = { Text("E-mail", style = MaterialTheme.typography.bodyMedium) },
+                        onValueChange = {
+                            viewModel.sendEvent(AuthReducer.AuthEvent.ChangeEmailText(text = it))
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        isError = state.emailFieldError?.isNotEmpty() == true,
+                        supportingText = {
+                            ErrorLabel(state.emailFieldError.orEmpty())
+                        }
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier,
+                        value = state.password,
+                        label = { Text("Пароль", style = MaterialTheme.typography.bodyMedium) },
+                        onValueChange = {
+                            viewModel.sendEvent(AuthReducer.AuthEvent.ChangePasswordText(text = it))
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        visualTransformation = if (state.isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { viewModel.sendEvent(AuthReducer.AuthEvent.ChangeShowPassword) }) {
+                                Icon(
+                                    painterResource(if (state.isShowPassword) R.drawable.ic_toggle_hide else R.drawable.ic_toggle_show),
+                                    null
+                                )
+                            }
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    RedButton(
+                        modifier = Modifier
+                            .width(TextFieldDefaults.MinWidth)
+                            .wrapContentHeight(),
+                        text = "Войти",
+                        isEnable = state.email.isEmailValid() && state.password.isNotBlank(),
+                        onClick = viewModel::auth
+                    )
                 }
-            )
-
-            OutlinedTextField(
-                modifier = Modifier,
-                value = state.password,
-                label = { Text("Пароль", style = MaterialTheme.typography.bodyMedium) },
-                onValueChange = {
-                    viewModel.sendEvent(AuthReducer.AuthEvent.ChangePasswordText(text = it))
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = if (state.isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    IconButton(onClick = { viewModel.sendEvent(AuthReducer.AuthEvent.ChangeShowPassword) }) {
-                        Icon(
-                            painterResource(if (state.isShowPassword) R.drawable.ic_toggle_hide else R.drawable.ic_toggle_show),
-                            null
-                        )
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            RedButton(
-                modifier = Modifier
-                    .width(TextFieldDefaults.MinWidth)
-                    .wrapContentHeight(),
-                text = "Войти",
-                isEnable = state.email.isEmailValid() && state.password.isNotBlank(),
-                onClick = viewModel::auth
-            )
+            }
         }
     }
 }

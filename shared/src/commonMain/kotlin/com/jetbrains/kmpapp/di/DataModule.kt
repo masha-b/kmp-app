@@ -55,7 +55,7 @@ val dataModule: Module
         }
 
         single<AuthApi> { AuthApiImpl(get()) }
-        single<AuthRepo> { AuthRepository(get()) }
+        single<AuthRepo> { AuthRepository(get(), get()) }
 
         single<AppsApi> { AppsApiImpl(get()) }
         single<AppsRepo> { AppsRepository(get()) }
