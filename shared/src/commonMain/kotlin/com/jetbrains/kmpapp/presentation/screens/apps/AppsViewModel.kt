@@ -5,6 +5,7 @@ import com.jetbrains.kmpapp.domain.handle
 import com.jetbrains.kmpapp.domain.models.apps.VkpAppType
 import com.jetbrains.kmpapp.domain.usecases.apps.GetAppsByTypeUseCase
 import com.jetbrains.kmpapp.presentation.base.BaseViewModel
+import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import kotlinx.coroutines.launch
 
 class AppsViewModel (
@@ -16,18 +17,16 @@ class AppsViewModel (
 ) {
 
     init {
-        println("55555555 appsScreen appVM $this $type")
         getAppsByType()
     }
 
 
     fun getAppsByType() {
 //        if (state.value.apps.isEmpty()) {
-            viewModelScope.launch {
+            viewModelScope.coroutineScope.launch {
                 sendEvent(AppsReducer.Event.SetLoader(true))
                 getAppsByTypeUseCase.invoke(this@AppsViewModel.type.name.lowercase()).handle(
                     onSuccess = {
-                        println("555555555 $it")
                         sendEvent(AppsReducer.Event.SetApps(it)) },
                     onError = { sendEvent(AppsReducer.Event.SetError(it)) }
                 )

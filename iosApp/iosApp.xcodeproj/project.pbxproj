@@ -16,6 +16,9 @@
 		4CCC6D362D37B08B00847750 /* KMPObservableViewModelSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4CCC6D352D37B08B00847750 /* KMPObservableViewModelSwiftUI */; };
 		4CCC6D382D37B0D800847750 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC6D372D37B0D800847750 /* DetailView.swift */; };
 		4CCC6D3A2D37B11600847750 /* KMPObservableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC6D392D37B11600847750 /* KMPObservableViewModel.swift */; };
+		4CCC6D3F2D38F61D00847750 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC6D3E2D38F61D00847750 /* HomeScreenView.swift */; };
+		4CCC6D422D38F71800847750 /* AuthScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC6D412D38F71800847750 /* AuthScreenView.swift */; };
+		4CCC6D452D38F76700847750 /* SettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC6D442D38F76700847750 /* SettingsScreenView.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +28,9 @@
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		4CCC6D372D37B0D800847750 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		4CCC6D392D37B11600847750 /* KMPObservableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMPObservableViewModel.swift; sourceTree = "<group>"; };
+		4CCC6D3E2D38F61D00847750 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
+		4CCC6D412D38F71800847750 /* AuthScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenView.swift; sourceTree = "<group>"; };
+		4CCC6D442D38F76700847750 /* SettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* KMP App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KMP App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,6 +67,48 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4CCC6D3B2D38F5BA00847750 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				4CCC6D3C2D38F5CD00847750 /* Screens */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		4CCC6D3C2D38F5CD00847750 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				4CCC6D432D38F73F00847750 /* SettingsScreen */,
+				4CCC6D402D38F6DF00847750 /* AuthScreen */,
+				4CCC6D3D2D38F5F700847750 /* HomeScreen */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		4CCC6D3D2D38F5F700847750 /* HomeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				4CCC6D3E2D38F61D00847750 /* HomeScreenView.swift */,
+			);
+			path = HomeScreen;
+			sourceTree = "<group>";
+		};
+		4CCC6D402D38F6DF00847750 /* AuthScreen */ = {
+			isa = PBXGroup;
+			children = (
+				4CCC6D412D38F71800847750 /* AuthScreenView.swift */,
+			);
+			path = AuthScreen;
+			sourceTree = "<group>";
+		};
+		4CCC6D432D38F73F00847750 /* SettingsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				4CCC6D442D38F76700847750 /* SettingsScreenView.swift */,
+			);
+			path = SettingsScreen;
+			sourceTree = "<group>";
+		};
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +130,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				4CCC6D3B2D38F5BA00847750 /* UI */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -206,7 +255,10 @@
 			files = (
 				4CCC6D3A2D37B11600847750 /* KMPObservableViewModel.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				4CCC6D3F2D38F61D00847750 /* HomeScreenView.swift in Sources */,
 				4CCC6D382D37B0D800847750 /* DetailView.swift in Sources */,
+				4CCC6D422D38F71800847750 /* AuthScreenView.swift in Sources */,
+				4CCC6D452D38F76700847750 /* SettingsScreenView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
