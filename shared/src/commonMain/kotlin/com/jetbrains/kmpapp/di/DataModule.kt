@@ -46,7 +46,7 @@ val dataModule: Module
             }.also { Napier.base(DebugAntilog()) }
         }
 
-        single<MuseumApi> { KtorMuseumApi(get()) }
+        single<MuseumApi> { KtorMuseumApi(get(), get()) }
         single<MuseumStorage> { InMemoryMuseumStorage() }
         single {
             MuseumRepository(get(), get()).apply {

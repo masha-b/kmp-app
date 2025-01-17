@@ -34,6 +34,26 @@ suspend inline fun <reified T> HttpClient.fetch(
     Result.failure(e)
 }
 
+suspend inline fun <reified T> HttpClient.exampleFetchForGet(
+    url: String,
+): Result<T?> = try {
+    val response = get(url)
+    if (response.status == HttpStatusCode.OK) {
+        val body = response.body<ServerResponse<T>>()
+        when {
+            body.isSuccessful -> Result.success(body.getData<T?>())
+            body.errorCode == ErrorCodes.UNAUTHORIZED_CODE -> Result.failure(UnauthorizedException())
+            else -> Result.failure(ServerException(body.errorCode.toString(), body.errorName))
+        }
+    } else {
+        Napier.e("${response.status}: ${response.bodyAsText()}")
+        Result.failure(UnknownException())
+    }
+} catch (e: Exception) {
+    Napier.e(e.message.toString(), e)
+    Result.failure(e)
+}
+
 suspend inline fun <reified T> HttpClient.fetchForGet(
     url: String,
 ): Result<T?> = try {

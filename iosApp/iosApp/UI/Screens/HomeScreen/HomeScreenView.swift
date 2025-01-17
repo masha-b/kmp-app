@@ -7,7 +7,7 @@ struct HomeScreenView: View {
     
     @StateViewModel
     var viewModel = ListViewModel(
-        museumRepository: Dependencies().museumRepository, authUseCase: Dependencies().authUseCase
+        museumRepository: Dependencies().museumRepository
     )
 
     let columns = [

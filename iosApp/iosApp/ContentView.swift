@@ -3,10 +3,6 @@ import KMPNativeCoroutinesAsync
 import KMPObservableViewModelSwiftUI
 import Shared
 
-class AppState: ObservableObject {
-    @Published var isShowingAuth: Bool = false
-}
-
 struct ContentView: View {
     
     @StateObject
@@ -21,12 +17,12 @@ struct ContentView: View {
                 }
             SettingsScreenView()
                 .tabItem {
-                    Label("Search", systemImage: "settings")
+                    Label("Settings", systemImage: "gear")
                 }
         }
         .environmentObject(appState)
         .fullScreenCover(isPresented: $appState.isShowingAuth) {
-            AuthScreenView(isPresented: $appState.isShowingAuth)
+            AuthScreenView(isPresented: $appState.isShowingAuth).environmentObject(appState)
         }
     }
 }

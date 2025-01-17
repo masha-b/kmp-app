@@ -21,7 +21,7 @@ class ServerResponse<T>(
 
     inline fun <reified T> getData(): T? {
         return jsonData.takeIf { isSuccessful && it is JsonObject }
-            ?.let { Json.decodeFromJsonElement(serializer(), it) }
+            ?.let { Json.decodeFromJsonElement(serializer<T>(), it) }
     }
 
     private companion object {

@@ -12,22 +12,9 @@ import com.rickclephas.kmp.observableviewmodel.ViewModel
 import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import com.rickclephas.kmp.observableviewmodel.stateIn
 
-class ListViewModel(museumRepository: MuseumRepository, authUseCase: AuthUseCase) : ViewModel() {
+class ListViewModel(museumRepository: MuseumRepository) : ViewModel() {
     @NativeCoroutinesState
     val objects: StateFlow<List<MuseumObject>> =
         museumRepository.getObjects()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-    init {
-        viewModelScope.coroutineScope.launch {
-        authUseCase.invoke("mgusev@sitesoft.ru", "Sekretnost021188").handleMap(
-            onSuccess = {
-                println("55555 SUCCESS $it")
-            },
-            onError = {
-                println("55555 ERROR $it")
-            }
-        )
-            }
-    }
 }

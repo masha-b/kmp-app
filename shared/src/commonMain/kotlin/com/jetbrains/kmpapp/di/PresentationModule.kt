@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val presentationModule: Module
     get() = module {
-        factory { ListViewModel(get(), get()) }
+        factory { ListViewModel(get()) }
         factory { DetailsViewModel(get()) }
         factory { AuthViewModel(get(), get()) }
         factory { (type: VkpAppType) -> AppsViewModel(get(), type) }

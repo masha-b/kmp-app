@@ -9,15 +9,19 @@
 import SwiftUI
 
 struct AuthScreenView: View {
+    
     @Binding var isPresented: Bool
-        
-        var body: some View {
-            VStack {
-                Text("Authorization Screen")
-                Button("Dismiss") {
-                    isPresented = false
-                }
+    @EnvironmentObject var appState: AppState
+    @State private var token: String = "sample-token"  // Replace with real authentication logic
+    
+    var body: some View {
+        VStack {
+            Text("Authorization Screen")
+            Button("Login and Save Token") {
+                appState.saveToken(token)
+                appState.checkToken()
             }
-            .padding()
         }
+        .padding()
+    }
 }

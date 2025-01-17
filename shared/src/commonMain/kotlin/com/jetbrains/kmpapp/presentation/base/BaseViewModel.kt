@@ -32,12 +32,12 @@ abstract class BaseViewModel<State : Reducer.ViewState, Event : Reducer.ViewEven
         get() = _state.asStateFlow()
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
-    @NativeCoroutinesState
+
     val event: SharedFlow<Event>
         get() = _event.asSharedFlow()
 
     private val _effects = Channel<Effect>(capacity = Channel.CONFLATED)
-    @NativeCoroutinesState
+
     val effect = _effects.receiveAsFlow()
 
     val timeCapsule: TimeCapsule<State> = TimeTravelCapsule { storedState ->

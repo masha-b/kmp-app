@@ -22,9 +22,9 @@ class LocalStorage (private val dataStore: DataStore<Preferences>) : Storage {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    override var authToken: String
+    override var authToken: String?
         get() = getString(AUTH_TOKEN)
-        set(value) = writeString(AUTH_TOKEN, value)
+        set(value) = writeString(AUTH_TOKEN, value.orEmpty())
 
     override fun getTokenFromPrefsAsFlow(): Flow<String> =
         dataStore.data.map {

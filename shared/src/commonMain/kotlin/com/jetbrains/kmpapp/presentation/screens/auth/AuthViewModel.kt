@@ -5,9 +5,9 @@ import com.jetbrains.kmpapp.domain.usecases.auth.AuthUseCase
 import com.jetbrains.kmpapp.domain.usecases.auth.GetAuthStateUseCase
 import com.jetbrains.kmpapp.presentation.base.BaseViewModel
 import com.rickclephas.kmp.observableviewmodel.coroutineScope
+import com.rickclephas.kmp.observableviewmodel.stateIn
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AuthViewModel (
@@ -19,11 +19,12 @@ class AuthViewModel (
 ) {
     val authState: StateFlow<Boolean?> = getAuthStateUseCase.invoke()
         .stateIn(
-            scope = viewModelScope.coroutineScope,
+            viewModelScope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
             initialValue = null
         )
 
+    @Throws(Exception::class)
     fun auth() {
         viewModelScope.coroutineScope.launch {
             sendEvent(AuthReducer.AuthEvent.SetLoader(true))

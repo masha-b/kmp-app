@@ -5,9 +5,9 @@ import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 
 
-fun initKoin(appDeclaration: KoinAppDeclaration, extraModules: List<Module>) =
+fun initKoin(appDeclaration: KoinAppDeclaration? = null, extraModules: List<Module> = emptyList()) =
     startKoin {
-        appDeclaration()
+        appDeclaration?.let { it() }
         modules(
             localStorageModule,
             dataModule,
@@ -16,3 +16,14 @@ fun initKoin(appDeclaration: KoinAppDeclaration, extraModules: List<Module>) =
             *extraModules.toTypedArray(),
         )
     }
+
+fun initKoin() {
+    startKoin {
+        modules(
+            localStorageModule,
+            dataModule,
+            domainModule,
+            presentationModule,
+        )
+    }
+}

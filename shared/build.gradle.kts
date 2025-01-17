@@ -55,6 +55,7 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
             api(libs.kmp.observable.viewmodel)
+            implementation("com.liftric:kvault:1.12.0")
         }
 
         // Required by KMM-ViewModel

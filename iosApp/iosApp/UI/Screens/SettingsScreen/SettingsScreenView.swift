@@ -7,10 +7,13 @@
 //
 
 import SwiftUI
+import Shared
 
 struct SettingsScreenView: View {
+    
     var body: some View {
-        Text("Настройки")
+        Text("Token: " + (Dependencies().localStorage.authToken ?? ""))
+        //Text("Token: " + LocalStorage().authToken)
     }
 }
 
