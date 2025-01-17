@@ -59,8 +59,8 @@ class AuthScreen : Screen {
         LaunchedEffect(effect) {
             effect.collect { action ->
                 when (action) {
-                    AuthReducer.AuthEffect.NavigateToCallLog -> navigator.replace(AppsScreen(VkpAppType.ANDROID))
-                    is AuthReducer.AuthEffect.Error -> appViewModel.showError(action.error)
+                    AuthReducer.Effect.NavigateToCallLog -> navigator.replace(AppsScreen(VkpAppType.ANDROID))
+                    is AuthReducer.Effect.Error -> appViewModel.showError(action.error)
                 }
             }
         }
@@ -92,7 +92,7 @@ class AuthScreen : Screen {
                         value = state.email,
                         label = { Text("E-mail", style = MaterialTheme.typography.bodyMedium) },
                         onValueChange = {
-                            viewModel.sendEvent(AuthReducer.AuthEvent.ChangeEmailText(text = it))
+                            viewModel.sendEvent(AuthReducer.Event.ChangeEmailText(text = it))
                         },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -107,13 +107,13 @@ class AuthScreen : Screen {
                         value = state.password,
                         label = { Text("Пароль", style = MaterialTheme.typography.bodyMedium) },
                         onValueChange = {
-                            viewModel.sendEvent(AuthReducer.AuthEvent.ChangePasswordText(text = it))
+                            viewModel.sendEvent(AuthReducer.Event.ChangePasswordText(text = it))
                         },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         visualTransformation = if (state.isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
-                            IconButton(onClick = { viewModel.sendEvent(AuthReducer.AuthEvent.ChangeShowPassword) }) {
+                            IconButton(onClick = { viewModel.sendEvent(AuthReducer.Event.ChangeShowPassword) }) {
                                 Icon(
                                     painterResource(if (state.isShowPassword) R.drawable.ic_toggle_hide else R.drawable.ic_toggle_show),
                                     null

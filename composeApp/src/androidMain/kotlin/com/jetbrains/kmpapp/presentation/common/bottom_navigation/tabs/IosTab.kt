@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.CurrentScreen
+import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -34,8 +35,10 @@ object IosTab : Tab {
 
     @Composable
     override fun Content() {
+        val nav = LocalNavigator.current
         Navigator(AppsScreen(VkpAppType.IOS)) { navigator ->
-            onClearStack = { navigator.popAll() }
+            println("555555555 ios nav $navigator $nav")
+            onClearStack = { nav?.popAll() }
             CurrentScreen()
         }
     }

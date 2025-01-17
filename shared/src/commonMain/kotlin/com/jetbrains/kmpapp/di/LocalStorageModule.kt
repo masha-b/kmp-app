@@ -6,6 +6,7 @@ import org.koin.core.module.Module
 interface Storage {
     var authToken: String
 
+    @Throws(Exception::class)
     fun getTokenFromPrefsAsFlow(): Flow<String>
 }
 

@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kmpNativeCoroutines)
+    alias(libs.plugins.kotlinxParcelize)
 }
 
 kotlin {
@@ -31,6 +32,7 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.koin)
+            implementation(libs.moko.parcelize)
         }
 
         commonMain.dependencies {

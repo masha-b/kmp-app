@@ -1,4 +1,4 @@
 package com.jetbrains.kmpapp.domain.exceptions
 
 
-class UnauthorizedException : BaseException()
+class UnauthorizedException(val isShowError: Boolean = true) : BaseException()

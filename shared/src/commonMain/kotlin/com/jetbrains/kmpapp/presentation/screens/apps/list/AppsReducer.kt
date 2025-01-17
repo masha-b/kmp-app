@@ -1,10 +1,10 @@
-package com.jetbrains.kmpapp.presentation.screens.apps
+package com.jetbrains.kmpapp.presentation.screens.apps.list
 
 import androidx.compose.runtime.Immutable
 import com.jetbrains.kmpapp.domain.exceptions.UnauthorizedException
 import com.jetbrains.kmpapp.domain.models.apps.VkpApp
 import com.jetbrains.kmpapp.presentation.base.Reducer
-import com.jetbrains.kmpapp.presentation.screens.apps.AppsReducer.Effect.*
+import com.jetbrains.kmpapp.presentation.screens.apps.list.AppsReducer.Effect.*
 
 
 class AppsReducer :
@@ -16,13 +16,15 @@ class AppsReducer :
         data class SetApps(val list: List<VkpApp>) : Event()
         data object OnSearchIconClick : Event()
         data class ChangeSearchText(val text: String) : Event()
+        data class SetLogoutDialog(val value: Boolean) : Event()
     }
 
     @Immutable
     sealed class Effect : Reducer.ViewEffect {
-        data object NavigateToCallLog : Effect()
+        data object NavigateToDetailsScreen : Effect()
         data class Error(val error: Throwable?) : Effect()
         data object ScrollListToTop : Effect()
+        data object NavigateToAuthScreen : Effect()
     }
 
     @Immutable
@@ -31,7 +33,8 @@ class AppsReducer :
         val apps: List<VkpApp> = emptyList(),
         val appsFiltered: List<VkpApp> = emptyList(),
         val isSearchBarVisible: Boolean = false,
-        val searchText: String = ""
+        val searchText: String = "",
+        val isLogoutDialogVisible: Boolean = false
     ) : Reducer.ViewState
 
     override fun reduce(
@@ -70,6 +73,12 @@ class AppsReducer :
                     searchText = event.text,
                     appsFiltered = previousState.apps.filter { it.name.contains(event.text, true) }
                 ) to ScrollListToTop
+            }
+
+            is Event.SetLogoutDialog ->  {
+                previousState.copy(
+                    isLogoutDialogVisible = event.value
+                ) to null
             }
         }
     }

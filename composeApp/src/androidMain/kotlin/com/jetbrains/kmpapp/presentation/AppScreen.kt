@@ -35,6 +35,8 @@ import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.navigator.internal.BackHandler
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.jetbrains.kmpapp.domain.exceptions.ServerException
+import com.jetbrains.kmpapp.domain.exceptions.UnauthorizedException
 import com.jetbrains.kmpapp.presentation.common.composables.Progress
 import com.jetbrains.kmpapp.presentation.common.bottom_navigation.TabNavigationItem
 import com.jetbrains.kmpapp.presentation.common.toolbar.Toolbar
@@ -46,6 +48,10 @@ import com.jetbrains.kmpapp.presentation.theme.Orange
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 
 @OptIn(InternalVoyagerApi::class, ExperimentalMaterial3Api::class)
@@ -61,29 +67,38 @@ fun App() {
     )
     val scope = rememberCoroutineScope()
 
-    var isNeedCloseApp: Boolean by remember { mutableStateOf(false) }
-
     var isRefreshing: Boolean by remember { mutableStateOf(false) }
 //        var onRefresh: (() -> Unit)? by remember { mutableStateOf(null) }
     val pullToRefreshState = rememberPullToRefreshState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    if (isNeedCloseApp) (context as? Activity)?.finishAffinity()
-
-    screenState.error?.let {
-        scope.launch {
-            screenState.onErrorHandled?.invoke()
-            snackbarHostState.showSnackbar(it)
-        }
-    }
+//    val androidTab =
 
     TabNavigator(AndroidTab) { navigator ->
 
         BackHandler(enabled = true) {
             if (navigator.current.key == AndroidTab.key) {
-                isNeedCloseApp = true
+                (context as? Activity)?.finishAffinity()
             } else
                 navigator.current = AndroidTab
+        }
+
+        screenState.error?.let {
+            scope.launch {
+                screenState.onErrorHandled?.invoke()
+                val errorText: String? = when (it) {
+                    is UnauthorizedException -> {
+                        clearTabsBackstack()
+                        navigator.current = AndroidTab.apply { openAuthScreen?.invoke() }
+                        if (it.isShowError) "Ошибка авторизации" else null
+                    }
+                    is ServerException -> it.error ?: "Непредвиденная серверная ошибка"
+                    is SocketTimeoutException -> "Превышено время ожидания сервера"
+                    is UnknownHostException, is ConnectException, is IOException -> "Отсутствует подключение к Интернету"
+                    else -> "Непредвиденная ошибка"
+                }
+                errorText?.let { snackbarHostState.showSnackbar(it) }
+            }
         }
 
         with(screenState) {
@@ -157,4 +172,10 @@ fun App() {
             )
         }
     }
+}
+
+private fun clearTabsBackstack() {
+    AndroidTab.onClearStack?.invoke()
+    IosTab.onClearStack?.invoke()
+    WindowsTab.onClearStack?.invoke()
 }

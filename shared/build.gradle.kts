@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.libs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -11,6 +10,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kmpNativeCoroutines)
+    alias(libs.plugins.kotlinxParcelize)
 }
 
 kotlin {
@@ -55,6 +55,8 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
             api(libs.kmp.observable.viewmodel)
+
+            implementation(libs.moko.parcelize)
         }
 
         // Required by KMM-ViewModel

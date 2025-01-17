@@ -1,11 +1,16 @@
 package com.jetbrains.kmpapp.presentation.screens.apps
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -19,44 +24,40 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import coil3.compose.AsyncImage
 import com.jetbrains.kmpapp.presentation.AppViewModel
 import com.jetbrains.kmpapp.presentation.common.ScreenState
-import com.jetbrains.kmpapp.presentation.screens.list.ListScreen
 import com.jetbrains.kmpapp.presentation.utils.debugInputPointer
 import com.jetbrains.kmpapp.presentation.utils.rememberFlowWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
-import com.jetbrains.kmpapp.domain.models.apps.VkpAppType
 import com.jetbrains.kmpapp.presentation.common.ActionButton
 import com.jetbrains.kmpapp.presentation.common.composables.EmptyData
 import com.jetbrains.kmpapp.presentation.common.composables.SearchBar
 import com.jetbrains.kmpapp.presentation.common.utils.animatedListModifier
-import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
 import org.koin.core.parameter.parametersOf
 import com.jetbrains.kmpapp.R
-import com.jetbrains.kmpapp.constants.CONST.ACTION_LOGOUT
 import com.jetbrains.kmpapp.constants.CONST.ACTION_SEARCH
-import com.jetbrains.kmpapp.domain.exceptions.UnauthorizedException
-import com.jetbrains.kmpapp.presentation.common.bottom_navigation.tabs.AndroidTab
-import com.jetbrains.kmpapp.presentation.common.composables.AppDialog
-import com.jetbrains.kmpapp.presentation.screens.apps.list.AppsReducer
-import com.jetbrains.kmpapp.presentation.screens.apps.list.AppsViewModel
-import com.jetbrains.kmpapp.presentation.theme.Gray
+import com.jetbrains.kmpapp.domain.models.apps.VkpApp
+import com.jetbrains.kmpapp.presentation.screens.apps.details.AppDetailsReducer
+import com.jetbrains.kmpapp.presentation.screens.apps.details.AppDetailsViewModel
+import com.jetbrains.kmpapp.presentation.theme.Black
 import com.jetbrains.kmpapp.presentation.utils.formatBuildDatetime
+import dev.icerock.moko.parcelize.Parcelable
+import kotlinx.parcelize.Parcelize
 
-@Serializable
-data class AppsScreen(val type: VkpAppType) : Screen {
+@Parcelize
+data class AppDetailsScreen(private val app: VkpApp) : Screen, Parcelable {
 
     override val key: ScreenKey
-        get() = super.key + type.name
+        get() = super.key + app.id
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel =
-            koinViewModel<AppsViewModel>(key = type.name, parameters = { parametersOf(type) })
+            koinViewModel<AppDetailsViewModel>(
+                key = app.id.toString(),
+                parameters = { parametersOf(app) })
         val appViewModel = koinViewModel<AppViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val effect = rememberFlowWithLifecycle(viewModel.effect)
@@ -65,33 +66,25 @@ data class AppsScreen(val type: VkpAppType) : Screen {
 
         appViewModel.setScreenState(
             ScreenState(
-                title = stringResource(type.stringRes),
+                title = app.name,
                 isLoading = state.isLoading,
-                isBackArrowEnable = false,
                 actionButtons = listOf(
                     ActionButton(
                         key = ACTION_SEARCH,
                         icon = painterResource(R.drawable.ic_search),
-                        onClick = { viewModel.sendEvent(AppsReducer.Event.OnSearchIconClick) }
-                    ),
-                    ActionButton(
-                        key = ACTION_LOGOUT,
-                        icon = painterResource(R.drawable.ic_logout),
-                        onClick = { viewModel.sendEvent(AppsReducer.Event.SetLogoutDialog(true)) }
+                        onClick = { viewModel.sendEvent(AppDetailsReducer.Event.OnSearchIconClick) }
                     )
                 ),
-                onRefresh = viewModel::getAppsByType
+                onRefresh = viewModel::getBuilds,
+                onBackPressed = navigator::pop
             )
         )
 
         LaunchedEffect(effect) {
             effect.collect { action ->
                 when (action) {
-                    AppsReducer.Effect.NavigateToDetailsScreen -> navigator.replace(ListScreen())
-                    is AppsReducer.Effect.Error -> appViewModel.showError(action.error)
-                    AppsReducer.Effect.ScrollListToTop -> listState.animateScrollToItem(0)
-                    AppsReducer.Effect.NavigateToAuthScreen -> appViewModel.showError(
-                        UnauthorizedException(isShowError = false))
+                    is AppDetailsReducer.Effect.Error -> appViewModel.showError(action.error)
+                    AppDetailsReducer.Effect.ScrollListToTop -> listState.animateScrollToItem(0)
                 }
             }
         }
@@ -110,56 +103,60 @@ data class AppsScreen(val type: VkpAppType) : Screen {
 
                 SearchBar(
                     value = state.searchText,
-                    onValueChanged = { viewModel.sendEvent(AppsReducer.Event.ChangeSearchText(it)) }
+                    onValueChanged = {
+                        viewModel.sendEvent(
+                            AppDetailsReducer.Event.ChangeSearchText(
+                                it
+                            )
+                        )
+                    }
                 )
             }
+
+            AsyncImage(
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(16.dp),
+                model = state.app?.icon?.let { "https://apps.sitesoft.ru" + it + "?token=SrbxM6TgoFVufyQylcypMO9AHz6BXMOed8kyr7tqEx9xNFcyVIDWFDuAA5wg" },
+                contentDescription = state.app?.name
+            )
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = listState,
                 contentPadding = PaddingValues(top = 12.dp, bottom = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                if (state.appsFiltered.isEmpty())
+                if (state.buildsFiltered.isEmpty())
                     item { EmptyData(modifier = animatedListModifier()) }
 
-                items(state.appsFiltered, key = { item -> item.id }) {
+                items(state.buildsFiltered, key = { item -> item.link }) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { navigator.push(AppDetailsScreen(it)) },
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        AsyncImage(
-                            modifier = Modifier.size(70.dp),
-                            model = "https://apps.sitesoft.ru" + it.icon + "?token=SrbxM6TgoFVufyQylcypMO9AHz6BXMOed8kyr7tqEx9xNFcyVIDWFDuAA5wg",
-                            contentDescription = it.name
+                        Text(
+                            text = "${it.version} от ${formatBuildDatetime(it.datetime)}",
+                            style = MaterialTheme.typography.labelMedium
                         )
 
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Column {
-                            Text(text = it.name, style = MaterialTheme.typography.titleSmall)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(text = "${it.version} (${it.build}) от ${formatBuildDatetime(it.updatedAt)}", style = MaterialTheme.typography.labelSmall, color = Gray)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(text = it.host, style = MaterialTheme.typography.labelSmall, color = Gray)
+                        IconButton(onClick = { onDownloadBuildClick(context, it.link) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_download),
+                                contentDescription = null,
+                                tint = Black
+                            )
                         }
                     }
                 }
             }
         }
+    }
 
-        if (state.isLogoutDialogVisible) {
-            AppDialog(
-                title = "Выйти из аккаунта?",
-                confirmButtonText = "Выйти",
-                onConfirmRequest = viewModel::logout,
-                onDismissRequest = { viewModel.sendEvent(AppsReducer.Event.SetLogoutDialog(false)) }
-            )
-        }
+    private fun onDownloadBuildClick(context: Context, link: String) {
+        println("5555555 $link")
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        context.startActivity(intent)
     }
 }

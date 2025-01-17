@@ -75,7 +75,7 @@ data class DetailScreen(val objectId: Int) : Screen {
                     viewModel.refresh(objectId)
                     error = "Ошибка сервера"
                 },
-                error = error,
+                error = Throwable(error),
                 onErrorHandled = { error = null }
             )
         )

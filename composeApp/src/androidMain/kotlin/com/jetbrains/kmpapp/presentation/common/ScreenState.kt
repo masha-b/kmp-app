@@ -11,7 +11,7 @@ data class ScreenState(
     val isBottomNavigationEnable: Boolean = true,
     val isLoading: Boolean = false,
     val onRefresh: (() -> Unit)? = null,
-    val error: String? = null,
+    val error: Throwable? = null,
     val onErrorHandled: (() -> Unit)? = null,
 )
 
